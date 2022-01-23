@@ -16,7 +16,9 @@
     "url": "https://github.com/kevren22/tennis_scorekeeper/issues"
   },
   "homepage": "https://github.com/kevren22/tennis_scorekeeper#readme",
-  "dependencies": {
-    "tailwindcss": "^3.0.11"
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.15"
   }
 }
