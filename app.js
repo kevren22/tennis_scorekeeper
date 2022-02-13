@@ -12,6 +12,7 @@ const p1 = {
 		2: document.querySelector('#p1Set2Disp'),
 		3: document.querySelector('#p1Set3Disp'),
 	},
+	setsWon: 0,
 };
 const p2 = {
 	score: 0,
@@ -27,6 +28,7 @@ const p2 = {
 		2: document.querySelector('#p2Set2Disp'),
 		3: document.querySelector('#p2Set3Disp'),
 	},
+	setsWon: 0,
 };
 
 const pointValues = {
@@ -41,6 +43,23 @@ let isGameOver = false;
 
 let activeSet = 1;
 
+function checkSet(player, opp, currentSet) {
+	if (player.setScore[currentSet] < 6) {
+		console.log('not end of set');
+	} else if (
+		player.setScore[currentSet] === 6 &&
+		opp.setScore[currentSet] === 6
+	) {
+		// tiebreak
+		console.log('tiebreak');
+	} else if (player.setScore[currentSet] - opp.setScore[currentSet] >= 2) {
+		console.log('end of set!');
+		activeSet += 1;
+	} else {
+		console.log('not end of set yet');
+	}
+}
+
 function addPoint(player, opp, currentSet) {
 	player.score += 1;
 	if (player.score >= 4 && player.score - opp.score >= 2) {
@@ -49,6 +68,7 @@ function addPoint(player, opp, currentSet) {
 		opp.score = 0;
 		opp.gameDisplay.innerText = pointValues[opp.score];
 		player.setDisplay[currentSet].innerText = player.setScore[currentSet];
+		checkSet(player, opp, currentSet);
 	} else if (player.score === 4 && opp.score === 4) {
 		player.score = 3;
 		opp.score = 3;
