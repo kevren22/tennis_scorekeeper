@@ -39,28 +39,38 @@ const pointValues = {
 	4: 'AD',
 };
 
-let isGameOver = false;
-
 let activeSet = 1;
+let isGameOver = false;
+let isTiebreak = false;
 
 function checkSet(player, opp, currentSet) {
 	if (player.setScore[currentSet] < 6) {
-		console.log('not end of set');
+		return;
 	} else if (
 		player.setScore[currentSet] === 6 &&
 		opp.setScore[currentSet] === 6
 	) {
-		// tiebreak
-		console.log('tiebreak');
-	} else if (player.setScore[currentSet] - opp.setScore[currentSet] >= 2) {
-		console.log('end of set!');
+		isTiebreak = true;
+	} else if (
+		player.setScore[currentSet] - opp.setScore[currentSet] >= 2 ||
+		player.setScore[currentSet] === 7
+	) {
+		player.setsWon += 1;
 		activeSet += 1;
 	} else {
-		console.log('not end of set yet');
+		return;
 	}
 }
 
-function addPoint(player, opp, currentSet) {
+function addPoint(player, opp, activeSet) {
+	if (isTiebreak) {
+		addTiebreakPoint(player, opp, activeSet);
+	} else {
+		addGamePoint(player, opp, activeSet);
+	}
+}
+
+function addGamePoint(player, opp, currentSet) {
 	player.score += 1;
 	if (player.score >= 4 && player.score - opp.score >= 2) {
 		player.setScore[currentSet] += 1;
@@ -77,6 +87,20 @@ function addPoint(player, opp, currentSet) {
 		opp.gameDisplay.innerText = '';
 	}
 	player.gameDisplay.innerText = pointValues[player.score];
+}
+
+function addTiebreakPoint(player, opp, currentSet) {
+	player.score += 1;
+	if (player.score >= 7 && player.score - opp.score >= 2) {
+		player.setScore[currentSet] += 1;
+		player.score = 0;
+		opp.score = 0;
+		opp.gameDisplay.innerText = pointValues[opp.score];
+		player.setDisplay[currentSet].innerText = player.setScore[currentSet];
+		checkSet(player, opp, currentSet);
+	} else {
+		player.gameDisplay.innerText = player.score;
+	}
 }
 
 p1.button.addEventListener('click', () => {
