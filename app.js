@@ -33,6 +33,8 @@ const p2 = {
 	name: 'Player 2',
 };
 
+const resetButton = document.querySelector('#reset');
+
 const pointValues = {
 	0: '0',
 	1: '15',
@@ -67,7 +69,7 @@ function checkSet(player, opp, currentSet) {
 
 function checkMatchOver(player) {
 	if (parseInt(player.setsWon) === 2) {
-		alert(`${player.name} wins!`);
+		alert(`${player.name.innerText} wins!`);
 		isMatchOver = true;
 	}
 }
@@ -116,9 +118,27 @@ function addTiebreakPoint(player, opp, currentSet) {
 	player.gameDisplay.innerText = player.score;
 }
 
+function playerReset(player) {
+	player.score = 0;
+	player.setsWon = 0;
+	player.setScore = {
+		1: 0,
+		2: 0,
+		3: 0,
+	};
+	player.gameDisplay.innerText = pointValues[player.score];
+	for (let i = 1; i <= 3; i++) {
+		player.setDisplay[i].innerText = player.setScore[i];
+	}
+}
+
 p1.button.addEventListener('click', () => {
 	addPoint(p1, p2, activeSet);
 });
 p2.button.addEventListener('click', () => {
 	addPoint(p2, p1, activeSet);
+});
+resetButton.addEventListener('click', () => {
+	playerReset(p1);
+	playerReset(p2);
 });
