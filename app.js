@@ -13,6 +13,7 @@ const p1 = {
 		3: document.querySelector('#p1Set3Disp'),
 	},
 	setsWon: 0,
+	name: 'Player 1',
 };
 const p2 = {
 	score: 0,
@@ -29,6 +30,7 @@ const p2 = {
 		3: document.querySelector('#p2Set3Disp'),
 	},
 	setsWon: 0,
+	name: 'Player 2',
 };
 
 const pointValues = {
@@ -40,7 +42,7 @@ const pointValues = {
 };
 
 let activeSet = 1;
-let isGameOver = false;
+let isMatchOver = false;
 let isTiebreak = false;
 
 function checkSet(player, opp, currentSet) {
@@ -57,16 +59,26 @@ function checkSet(player, opp, currentSet) {
 	) {
 		player.setsWon += 1;
 		activeSet += 1;
+		checkMatchOver(player);
 	} else {
 		return;
 	}
 }
 
+function checkMatchOver(player) {
+	if (parseInt(player.setsWon) === 2) {
+		alert(`${player.name} wins!`);
+		isMatchOver = true;
+	}
+}
+
 function addPoint(player, opp, activeSet) {
-	if (isTiebreak) {
-		addTiebreakPoint(player, opp, activeSet);
-	} else {
-		addGamePoint(player, opp, activeSet);
+	if (!isMatchOver) {
+		if (isTiebreak) {
+			addTiebreakPoint(player, opp, activeSet);
+		} else {
+			addGamePoint(player, opp, activeSet);
+		}
 	}
 }
 
@@ -98,9 +110,10 @@ function addTiebreakPoint(player, opp, currentSet) {
 		opp.gameDisplay.innerText = pointValues[opp.score];
 		player.setDisplay[currentSet].innerText = player.setScore[currentSet];
 		checkSet(player, opp, currentSet);
+		isTiebreak = false;
 	} else {
-		player.gameDisplay.innerText = player.score;
 	}
+	player.gameDisplay.innerText = player.score;
 }
 
 p1.button.addEventListener('click', () => {
