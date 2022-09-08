@@ -69,7 +69,7 @@ function checkSet(player, opp, currentSet) {
 
 function checkMatchOver(player) {
 	if (parseInt(player.setsWon) === 2) {
-		alert(`${player.name.innerText} wins!`);
+		alert(`${player.name} wins!`);
 		isMatchOver = true;
 	}
 }
@@ -141,4 +141,6 @@ p2.button.addEventListener('click', () => {
 resetButton.addEventListener('click', () => {
 	playerReset(p1);
 	playerReset(p2);
+	isMatchOver = false;
+	activeSet = 1;
 });
